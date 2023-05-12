@@ -1,4 +1,4 @@
-name: Mixed inputs
+name: Mixed inputs test
 
 on:
   workflow_dispatch:
