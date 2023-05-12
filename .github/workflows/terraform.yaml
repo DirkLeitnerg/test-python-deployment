@@ -4,7 +4,7 @@ name: Deploy to Amazon EC2
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "master", "dev" ]
 
 env:
   AWS_REGION: eu-central-1                   # set this to your preferred AWS region, e.g. us-west-1
@@ -42,6 +42,11 @@ jobs:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ env.AWS_REGION }}
+
+    - name: Terraform
+      run: |  
+          terraform init
+          terraform plan 
 
     - name: Login to Amazon ECR
       id: login-ecr
