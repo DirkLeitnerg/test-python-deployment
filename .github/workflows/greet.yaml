@@ -20,7 +20,16 @@ on:
 jobs:
   greet:
     runs-on: ubuntu-latest
-
+    environment: dev
     steps:
     - name: Send greeting
       run: echo "${{ github.event.inputs.message }} ${{ fromJSON('["", ""]')[github.event.inputs.use-emoji == 'true'] }} ${{ github.event.inputs.name }}"
+    - name: create batch file
+      env:
+        AWS_REGION : ${{var.AWS_REGION}}
+      run: |
+        touch config.py
+        echo "source = {" >> config.py
+        echo ""AWS_REGION":"$AWS_REGION"" >> config.py
+        echo "}" >> config.py
+        cat config.py
