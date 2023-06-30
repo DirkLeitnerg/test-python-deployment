@@ -30,6 +30,6 @@ jobs:
       run: |
         touch config.py
         echo "source = {" >> config.py
-        echo ""AWS_REGION":"$AWS_REGION"" >> config.py
+        echo ""AWS_REGION":"" & $AWS_REGION & """ >> config.py
         echo "}" >> config.py
         cat config.py
