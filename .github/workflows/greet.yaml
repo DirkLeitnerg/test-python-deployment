@@ -26,7 +26,7 @@ jobs:
       run: echo "${{ github.event.inputs.message }} ${{ fromJSON('["", ""]')[github.event.inputs.use-emoji == 'true'] }} ${{ github.event.inputs.name }}"
     - name: create batch file
       env:
-        AWS_REGION : ${{env.AWS_REGION}}
+        AWS_REGION : ${{vars.AWS_REGION}}
       run: |
         touch config.py
         echo "source = {" >> config.py
