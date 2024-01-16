@@ -19,7 +19,7 @@ on:
         type: environment
 
 jobs:
-  build:
+  Build:
     runs-on: ubuntu-latest
     environment: dev
     steps:
@@ -38,6 +38,7 @@ jobs:
   Test:
     runs-on: ubuntu-latest
     environment: dev
+    needs: build
     steps:
     - name: Send greeting
       run: echo "${{ github.event.inputs.message }} ${{ fromJSON('["", ""]')[github.event.inputs.use-emoji == 'true'] }} ${{ github.event.inputs.name }}"
@@ -54,6 +55,7 @@ jobs:
   Deploy:
     runs-on: ubuntu-latest
     environment: dev
+    needs: Test
     steps:
     - name: Send greeting
       run: echo "${{ github.event.inputs.message }} ${{ fromJSON('["", ""]')[github.event.inputs.use-emoji == 'true'] }} ${{ github.event.inputs.name }}"
