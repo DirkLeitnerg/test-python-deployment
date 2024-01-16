@@ -1,0 +1,71 @@
+name: Mixed inputs
+
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        type: choice
+        description: Where to install
+        options: 
+        - Dev
+        - Test
+        - Prod
+      message:
+        required: true
+      use-emoji:
+        type: boolean
+        description: Include  emojis
+      environment:
+        type: environment
+
+jobs:
+  Build:
+    runs-on: ubuntu-latest
+    environment: dev
+    steps:
+    - name: Send greeting
+      run: echo "${{ github.event.inputs.message }} ${{ fromJSON('["", ""]')[github.event.inputs.use-emoji == 'true'] }} ${{ github.event.inputs.name }}"
+    - name: create batch file
+      env:
+        AWS_REGION : ${{vars.AWS_REGION}}
+      run: |
+        touch config.py
+        echo "source = {" >> config.py
+        echo '"AWS_REGION":"${{vars.AWS_REGION}}"' >> config.py
+        echo "}" >> config.py
+        cat config.py
+        echo $AWS_REGION
+  Test:
+    runs-on: ubuntu-latest
+    environment: dev
+    needs: build
+    steps:
+    - name: Send greeting
+      run: echo "${{ github.event.inputs.message }} ${{ fromJSON('["", ""]')[github.event.inputs.use-emoji == 'true'] }} ${{ github.event.inputs.name }}"
+    - name: create batch file
+      env:
+        AWS_REGION : ${{vars.AWS_REGION}}
+      run: |
+        touch config.py
+        echo "source = {" >> config.py
+        echo '"AWS_REGION":"${{vars.AWS_REGION}}"' >> config.py
+        echo "}" >> config.py
+        cat config.py
+        echo $AWS_REGION
+  Deploy:
+    runs-on: ubuntu-latest
+    environment: dev
+    needs: Test
+    steps:
+    - name: Send greeting
+      run: echo "${{ github.event.inputs.message }} ${{ fromJSON('["", ""]')[github.event.inputs.use-emoji == 'true'] }} ${{ github.event.inputs.name }}"
+    - name: create batch file
+      env:
+        AWS_REGION : ${{vars.AWS_REGION}}
+      run: |
+        touch config.py
+        echo "source = {" >> config.py
+        echo '"AWS_REGION":"${{vars.AWS_REGION}}"' >> config.py
+        echo "}" >> config.py
+        cat config.py
+        echo $AWS_REGION
