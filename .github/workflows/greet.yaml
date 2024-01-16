@@ -5,10 +5,11 @@ on:
     inputs:
       name:
         type: choice
-        description: Who to greet
+        description: Where to install
         options: 
-        - monalisa
-        - cschleiden
+        - Dev
+        - Test
+        - Prod
       message:
         required: true
       use-emoji:
@@ -18,7 +19,39 @@ on:
         type: environment
 
 jobs:
-  greet:
+  build:
+    runs-on: ubuntu-latest
+    environment: dev
+    steps:
+    - name: Send greeting
+      run: echo "${{ github.event.inputs.message }} ${{ fromJSON('["", ""]')[github.event.inputs.use-emoji == 'true'] }} ${{ github.event.inputs.name }}"
+    - name: create batch file
+      env:
+        AWS_REGION : ${{vars.AWS_REGION}}
+      run: |
+        touch config.py
+        echo "source = {" >> config.py
+        echo '"AWS_REGION":"${{vars.AWS_REGION}}"' >> config.py
+        echo "}" >> config.py
+        cat config.py
+        echo $AWS_REGION
+  Test:
+    runs-on: ubuntu-latest
+    environment: dev
+    steps:
+    - name: Send greeting
+      run: echo "${{ github.event.inputs.message }} ${{ fromJSON('["", ""]')[github.event.inputs.use-emoji == 'true'] }} ${{ github.event.inputs.name }}"
+    - name: create batch file
+      env:
+        AWS_REGION : ${{vars.AWS_REGION}}
+      run: |
+        touch config.py
+        echo "source = {" >> config.py
+        echo '"AWS_REGION":"${{vars.AWS_REGION}}"' >> config.py
+        echo "}" >> config.py
+        cat config.py
+        echo $AWS_REGION
+  Deploy:
     runs-on: ubuntu-latest
     environment: dev
     steps:
